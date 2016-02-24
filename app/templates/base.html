@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% if title %}
+        <title>{{ title }} - flaskPlate </title>
+        {% else %}
+        <title>Welcome to flaskPlate</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>Microblog : <a href="/index">home</a></div>
+        <hr>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
