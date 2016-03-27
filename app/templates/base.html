@@ -7,11 +7,22 @@
         {% else %}
         <title>Welcome to flaskPlate</title>
         {% endif %}
+
+        <link rel="stylesheet" href="/static/css/app.css" charset="utf-8">
     </head>
     <body>
         <div>Microblog : <a href="/index">home</a></div>
         <hr>
-        {% block content %}
-        {% endblock %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                {% for msg in messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %} {% endblock %}
     </body>
 </html>
