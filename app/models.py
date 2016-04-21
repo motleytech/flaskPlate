@@ -1,6 +1,7 @@
 """
 holds the models for our app
 """
+from hashlib import md5
 from .app import db
 
 class User(db.Model):
@@ -27,6 +28,10 @@ class User(db.Model):
             return unicode(self.id)
         except NameError:
             return str(self.id)
+
+    def avatar(self, size):
+        return 'http://www.gravatar.com/avatar/%s?d=mm&s=%s' % (md5(self.email.encode('utf-8')).hexdigest(), size)
+
 
     def __repr__(self):
         return '<User %r (id: %d)>' % (self.nickname, self.id)
