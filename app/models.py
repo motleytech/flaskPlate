@@ -1,3 +1,6 @@
+"""
+holds the models for our app
+"""
 from .app import db
 
 class User(db.Model):
