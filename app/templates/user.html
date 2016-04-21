@@ -14,8 +14,6 @@
 
   <hr>
   {% for post in posts %}
-  <p>
-    {{ post.author.nickname }} says: <b>{{ post.body }}</b>
-  </p>
+    {% include 'post.html' %}
   {% endfor %}
 {% endblock %}
