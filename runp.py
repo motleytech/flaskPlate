@@ -15,4 +15,4 @@ args = parser.parse_args()
 
 print "Starting server on %s:%s..." % (args.host, args.port)
 
-app.run(debug=True, host=args.host, port=args.port)
+app.run(debug=False, host=args.host, port=args.port)
