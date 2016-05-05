@@ -98,7 +98,7 @@ class TestCase(unittest.TestCase):
         assert len(fps[3]) == 1
 
         p1, p2, p3, p4 = posts
-        assert fps[0] == [p4, p2, p1]
+        assert fps[0] == [p4]
         assert fps[1] == [p3, p2]
         assert fps[2] == [p4, p3]
         assert fps[3] == [p4]
