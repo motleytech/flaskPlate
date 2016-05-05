@@ -4,6 +4,11 @@ holds the models for our app
 from hashlib import md5
 from .app import db
 
+followers = db.Table('followers',
+    db.Column('fwr_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('fwd_id', db.Integer, db.ForeignKey('user.id')),
+)
+
 class User(db.Model):
     """The User model in our app"""
     id = db.Column(db.Integer, primary_key=True)
@@ -12,6 +17,28 @@ class User(db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(1000))
     last_seen = db.Column(db.DateTime)
+    followed = db.relationship('User',
+                               secondary=followers,
+                               primaryjoin=(followers.c.fwr_id == id),
+                               secondaryjoin=(followers.c.fwd_id == id),
+                               backref=db.backref('followers', lazy='dynamic'),
+                               lazy='dynamic')
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+            return self
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+            return self
+
+    def is_following(self, user):
+        return (self.followed.filter(followers.c.fwd_id == user.id).count() > 0)
+
+    def followed_posts(self):
+        return Post.query.join(followers, (followers.c.fwd_id == Post.user_id)).filter(followers.c.fwr_id == self.id).order_by(Post.timestamp.desc())
 
     @property
     def is_authenticated(self):
