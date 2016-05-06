@@ -2,7 +2,10 @@
 holds the models for our app
 """
 from hashlib import md5
-from .app import db
+from .app import db, app
+import sys
+
+import flask.ext.whooshalchemy as whooshalchemy
 
 followers = db.Table('followers',
     db.Column('fwr_id', db.Integer, db.ForeignKey('user.id')),
@@ -78,6 +81,7 @@ class User(db.Model):
 
 class Post(db.Model):
     """ Model for a blog post """
+    __searchable__ = ['body']
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(10000))
     timestamp = db.Column(db.DateTime)
@@ -85,3 +89,5 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post by %s at %s>\n%s\n\n' % (self.author, str(self.timestamp), self.body)
+
+whooshalchemy.whoosh_index(app, Post)
