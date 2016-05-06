@@ -11,6 +11,10 @@ from .forms import LoginForm, EditForm, PostForm  # pylint: disable=E0401
 from .models import User, Post
 from .login import lm, oid
 
+class Dummy(object):
+    pass
+
+
 @app.before_request
 def before_request():
     g.user = current_user
@@ -49,7 +53,6 @@ def load_user(id):
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@oid.loginhandler
 def login():
     """
     The default index view
@@ -59,13 +62,15 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         session['remember_me'] = form.remember_me.data
-        return oid.try_login(form.openid.data, ask_for=['nickname', 'email'])
+        resp = Dummy()
+        resp.email = form.openid.data
+        resp.nickname = resp.email.split("@")[0]
+        return after_login(resp)
     return render_template('login.html',
                            title="Sign-In",
                            form=form,
                            providers=app.config['OPENID_PROVIDERS'])
 
-@oid.after_login
 def after_login(resp):
     if resp.email is None or resp.email == "":
         flash('Invalid login. Please try again.')
