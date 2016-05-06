@@ -27,6 +27,10 @@ class EditForm(Form):
             return True
         user = User.query.filter_by(nickname=self.nickname.data).first()
         if user != None:
-            serlf.nickname.errors.append('This nickname is already in use. Please choose another one.')
+            self.nickname.errors.append('This nickname is already in use. Please choose another one.')
             return False
         return True
+
+
+class PostForm(Form):
+    post = StringField('post', validators=[DataRequired()])
