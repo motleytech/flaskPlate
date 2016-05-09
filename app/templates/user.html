@@ -9,7 +9,7 @@
       <td>
         <h1 style="margin-top:0px">User: {{ user.nickname }}</h1>
         {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-        {% if user.last_seen %}<p><i>Last seen: {{ user.last_seen }} </i></p>{% endif %}
+        {% if user.last_seen %}<p><i>Last seen: {{ momentjs(user.last_seen).calendar() }} </i></p>{% endif %}
         <p>
           {{ user.followers.count() }} followers |
           {% if user.id == g.user.id %}

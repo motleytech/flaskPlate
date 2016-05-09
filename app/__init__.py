@@ -9,3 +9,6 @@ from .app import app, Flask, db # pylint: disable=E0401
 from .login import lm, oid
 
 from . import mail
+from .momentjs import momentjs
+
+app.jinja_env.globals['momentjs'] = momentjs
