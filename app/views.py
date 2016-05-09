@@ -10,6 +10,7 @@ from .app import app, db  # pylint: disable=E0401
 from .forms import LoginForm, EditForm, PostForm, SearchForm  # pylint: disable=E0401
 from .models import User, Post
 from .login import lm, oid
+from .mail import follower_notification
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS
 
 class Dummy(object):
@@ -136,6 +137,7 @@ def follow(nickname):
     db.session.add(u)
     db.session.commit()
     flash('You are now following %s!' % nickname)
+    follower_notification(user, g.user)
     return redirect(url_for('user', nickname=nickname))
 
 @app.route('/unfollow/<nickname>')
